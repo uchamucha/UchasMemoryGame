@@ -1,7 +1,10 @@
 /*
- * Create a list that holds all of your cards
- */
-
+    *Creating an array called allCards to hold all the damn cards!
+    *Using only document.querySelectorAll() returns a NodeList
+    *putting that inside array-braces creates an array with a single element which is the NodeList
+    *using the ... prefix transfers the NodeList into individual items in the array.
+*/
+const allCards = [ ...document.querySelectorAll('.deck li') ];
 
 /*
  * Display the cards on the page
@@ -10,21 +13,28 @@
  *   - add each card's HTML to the page
  */
 
+//shuffling the damn cards!
+shuffle(allCards);
+
+//defining function to create a card's HTML
+function createHTML() {}
+
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+	var currentIndex = array.length,
+		temporaryValue,
+		randomIndex;
 
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
+	while (currentIndex !== 0) {
+		randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex -= 1;
+		temporaryValue = array[currentIndex];
+		array[currentIndex] = array[randomIndex];
+		array[randomIndex] = temporaryValue;
+	}
 
-    return array;
+	return array;
 }
-
 
 /*
  * set up the event listener for a card. If a card is clicked:
