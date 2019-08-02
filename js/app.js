@@ -4,7 +4,7 @@
     *putting that inside array-braces creates an array with a single element which is the NodeList
     *using the ... prefix transfers the NodeList into individual items in the array.
 */
-const allCards = [ ...document.querySelectorAll('.deck li') ];
+const allCards = [ document.querySelectorAll('.deck li') ];
 
 /*
  * Display the cards on the page
@@ -14,10 +14,32 @@ const allCards = [ ...document.querySelectorAll('.deck li') ];
  */
 
 //shuffling the damn cards!
-shuffle(allCards);
+shuffledCards = shuffle(allCards);
+
+const theDeck = document.querySelector('deck');
+
+theDeck.innerHTML = 'shuffledCards';
+
+console.log(allCards);
+resetCards();
+
+function resetCards() {
+	shuffle(allCards);
+	allCards.forEach(function(el) {
+		el.classList.remove('open', 'show', 'match');
+	});
+}
+
+document.addEventListener('click', showCard);
+
+function showCard() {
+	allCards.forEach(function(el) {
+		el.classList.add('show');
+	});
+}
 
 //defining function to create a card's HTML
-function createHTML() {}
+// function createHTML() {}
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
