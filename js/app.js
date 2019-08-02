@@ -1,10 +1,10 @@
 /*
-    *Creating an array called allCards to hold all the damn cards!
-    *Using only document.querySelectorAll() returns a NodeList
-    *putting that inside array-braces creates an array with a single element which is the NodeList
-    *using the ... prefix transfers the NodeList into individual items in the array.
-*/
-const allCards = [ document.querySelectorAll('.deck li') ];
+ *Creating an array called allCards to hold all the damn cards!
+ *Using only document.querySelectorAll() returns a NodeList
+ *putting that inside array-braces creates an array with a single element which is the NodeList
+ *using the ... prefix transfers the NodeList into individual items in the array.
+ */
+let allCards = [...document.querySelectorAll(".deck li")];
 
 /*
  * Display the cards on the page
@@ -13,49 +13,71 @@ const allCards = [ document.querySelectorAll('.deck li') ];
  *   - add each card's HTML to the page
  */
 
-//shuffling the damn cards!
-shuffledCards = shuffle(allCards);
+// createHTML to shuffle and reset cards
+function shuffleAndResetHTML() {
+  // create array of existing cards from the present deck
+  let allCards = [...document.querySelectorAll(".deck li")];
 
-const theDeck = document.querySelector('deck');
+  // shuffle it
+  let shuffledCards = shuffle(allCards);
 
-theDeck.innerHTML = 'shuffledCards';
+  // convert it into HTML to display it
+  let newDeck = shuffledCards[0].outerHTML;
+  shuffledCards.forEach(function(el, index) {
+    if (index < 1) return;
+    newDeck += `${el.outerHTML}`;
+  });
+  document.querySelector(".deck").innerHTML = newDeck;
 
-console.log(allCards);
-resetCards();
+  // turn cards OFF
+  resetCards();
+}
 
+// reset cards in the existing deck
 function resetCards() {
-	shuffle(allCards);
-	allCards.forEach(function(el) {
-		el.classList.remove('open', 'show', 'match');
-	});
+  let cardsToReset = [...document.querySelectorAll(".deck li")];
+  cardsToReset.forEach(function(el) {
+    el.classList.remove("open", "show", "match");
+  });
 }
 
-document.addEventListener('click', showCard);
-
-function showCard() {
-	allCards.forEach(function(el) {
-		el.classList.add('show');
-	});
+//function to show all cards in the existing deck
+function showAllCards() {
+  let cardsToShow = [...document.querySelectorAll(".deck li")];
+  cardsToShow.forEach(function(el) {
+    el.classList.add("show", "open");
+  });
 }
 
-//defining function to create a card's HTML
-// function createHTML() {}
+// show clicked card
+var count = 0;
+function showClickedCard(evt) {
+  count++;
+  if (count <= 2) {
+    evt.target.classList.add("show", "open");
+    setTimeout(function() {
+      evt.target.classList.remove("show", "open");
+    }, 3000);
+  }
+}
+
+document.addEventListener("click", showClickedCard);
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-	var currentIndex = array.length,
-		temporaryValue,
-		randomIndex;
+  var currentIndex = array.length,
+    temporaryValue,
+    randomIndex;
 
-	while (currentIndex !== 0) {
-		randomIndex = Math.floor(Math.random() * currentIndex);
-		currentIndex -= 1;
-		temporaryValue = array[currentIndex];
-		array[currentIndex] = array[randomIndex];
-		array[randomIndex] = temporaryValue;
-	}
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
 
-	return array;
+  return array;
 }
 
 /*
