@@ -51,20 +51,35 @@ function showAllCards() {
 
 // show clicked card
 var clickedCard = [];
-function showClickedCard(evt) {
+
+here: function showClickedCard(evt) {
 	clickedCard.push(evt.target);
 	console.log(clickedCard);
 	if (clickedCard.length <= 2) {
 		clickedCard[`${clickedCard.length - 1}`].classList.add('show', 'open');
+	}
+
+	if (clickedCard.length === 2) {
+		var cList1 = clickedCard[0].innerHTML;
+		var cList2 = clickedCard[1].innerHTML;
+
+		console.log(cList1, cList2);
+
+		if (cList1 === cList2) {
+			console.log('true');
+			clickedCard = [];
+			return;
+		}
 	} else if (clickedCard.length > 2) {
+		console.log('false');
 		timeOut();
-		clickedCard = [];
 	}
 }
 function timeOut() {
 	console.log(clickedCard);
 	clickedCard[0].classList.remove('show', 'open');
 	clickedCard[1].classList.remove('show', 'open');
+	clickedCard = [];
 }
 
 shuffleAndResetHTML();
