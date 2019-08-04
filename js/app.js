@@ -50,6 +50,18 @@ function showAllCards() {
 }
 
 // main game logic
+let saveStarArray = [];
+saveStarArray = document.querySelectorAll(".stars li");
+var saveStarHTML = saveStarArray[0].outerHTML;
+saveStarArray.forEach(function(el, index) {
+  if (index < 1) return;
+  saveStarHTML += el.outerHTML;
+});
+
+let movesInnertext = document.querySelector(".moves");
+movesInnertext.textContent = 0;
+var moves = 0;
+
 var clickedCard = []; //declaring global variable
 var cardsMatched = [];
 function showClickedCard(evt) {
@@ -96,7 +108,18 @@ function timeOut() {
   clickedCard = [];
 }
 
-function updateStars() {}
+function updateStars() {
+  if (moves === 26) {
+    document.querySelector(".stars .five-star").remove();
+  } else if (moves === 36) {
+    document.querySelector(".stars .four-star").remove();
+  } else if (moves === 46) {
+    document.querySelector(".stars .three-star").remove();
+  } else if (moves === 56) {
+    document.querySelector(".stars .two-star").remove();
+  }
+  return;
+}
 
 function resetStars() {
   document.querySelector(".stars").innerHTML = saveStarHTML;
@@ -105,13 +128,18 @@ function resetStars() {
 function updateMoves() {
   moves += 1;
   movesInnertext.textContent = moves;
+  return;
 }
 
 function gameWon() {
-  alert("Yay you win! Click OK to start again!");
+  const score = 1600 / moves;
+  alert(`Yay you win with a score of ${score} points! Click OK to play again!`);
   shuffleAndResetHTML();
   setTimeout(showAllCards, 800);
   setTimeout(resetCards, 7000);
+
+  movesInnertext.textContent = 0;
+  resetStars();
 
   var listenForClicks = document.querySelectorAll(
     ".deck li:not(.show):not(.open):not(.match)"
@@ -119,18 +147,12 @@ function gameWon() {
   listenForClicks.forEach(function(el) {
     el.addEventListener("click", showClickedCard);
   });
-  movesInnertext.textContent = 0;
 }
 
 shuffleAndResetHTML();
 setTimeout(showAllCards, 800);
 setTimeout(resetCards, 7000);
 
-let saveStarHTML = document.querySelectorAll(".star li");
-
-let movesInnertext = document.querySelector(".moves");
-movesInnertext.textContent = 0;
-var moves = 0;
 var listenForClicks = document.querySelectorAll(
   ".deck li:not(.show):not(.open):not(.match)"
 );
