@@ -160,6 +160,16 @@ listenForClicks.forEach(function(el) {
   el.addEventListener("click", showClickedCard);
 });
 
+function reset() {
+  shuffleAndResetHTML();
+  setTimeout(showAllCards, 800);
+  setTimeout(resetCards, 7000);
+
+  movesInnertext.textContent = 0;
+  resetStars();
+}
+
+document.querySelector(".restart").addEventListener("click", reset);
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
   var currentIndex = array.length,
