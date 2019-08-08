@@ -1,9 +1,13 @@
 //begin
-gameStart();
-setTimeout(showAllCards, 800);
-setTimeout(resetCards, 7000);
 
-//add click listener to reset button
+//initalize timer values
+var interval = null;
+let seconds = 0;
+let minutes = 0;
+let displaySeconds = 0;
+let displayMinutes = 0;
+
+//add a click listener to reset button
 document.querySelector('.restart').addEventListener('click', reset);
 
 //save star HTML as a string
@@ -20,14 +24,48 @@ let movesInnertext = document.querySelector('.moves');
 movesInnertext.textContent = 0;
 var moves = 0;
 
+//start game
+shuffleDeck(); //alert+timer+shuffle
+setTimeout(showAllCards, 800);
+setTimeout(resetCards, 7000);
+
 //add click listeners to all cards
 listenForClicks();
 
+//timer function
+function gameTimer() {
+	seconds++;
+
+	//Logic to determine when to increment next value
+	if (seconds / 60 === 1) {
+		seconds = 0;
+		minutes++;
+	}
+
+	//If seconds/minutes are only one digit, add a leading 0 to the value
+	if (seconds < 10) {
+		displaySeconds = '0' + seconds.toString();
+	} else {
+		displaySeconds = seconds;
+	}
+
+	if (minutes < 10) {
+		displayMinutes = '0' + minutes.toString();
+	} else {
+		displayMinutes = minutes;
+	}
+
+	//Display updated time values to user
+	document.querySelector('.seconds').innerHTML = displayMinutes + ':' + displaySeconds;
+}
+
 // createHTML to shuffle and reset cards
-function gameStart() {
+function shuffleDeck() {
 	alert(
 		`Welcome to the Memory Mame.\n\n1. Once the cards are revealed, you'll have seven seconds to memorize them before they're yeeted out of your sight.\n\n2. Click on two cards to reveal them.\n\n3. If they don't match click elsewhere to reset them.\n\n4. Start clicking again and get the damn cards matched!`
 	);
+
+	interval = setInterval(gameTimer, 1000);
 
 	// create card array using existing deck
 	let allCards = [ ...document.querySelectorAll('.deck li') ];
@@ -52,6 +90,7 @@ function gameStart() {
 //main game logic
 var clickedCard = [];
 var cardsMatched = [];
+var saveTime;
 function gameLogic(evt) {
 	// store clicked li element into clickedCard array
 	clickedCard.push(evt.target);
@@ -86,8 +125,24 @@ function gameLogic(evt) {
 
 			//game win logic if all cards match
 			if (cardsMatched.length === 8) {
-				cardsMatched = []; //reset cardsMatched for next game
-				setTimeout(gameWon, 500); //call gameWon function
+				//stop timer
+				clearInterval(interval);
+
+				//store timer data
+				saveTime = document.querySelector('.seconds').innerHTML;
+
+				//reset timer data
+				document.querySelector('.seconds').innerHTML = '00:00';
+				seconds = 0;
+				minutes = 0;
+				displaySeconds = 0;
+				displayMinutes = 0;
+
+				//reset cardsMatched for next game
+				cardsMatched = [];
+
+				//call gameWon function
+				setTimeout(gameWon, 500);
 			}
 		}
 
@@ -102,8 +157,18 @@ function gameLogic(evt) {
 		//reset open cards back to closed
 		clickedCard[0].classList.remove('show', 'open', 'match');
 		clickedCard[1].classList.remove('show', 'open', 'match');
-		clickedCard = []; //reset clickedCard array to for next cycle if no match
+
+		//reset clickedCard array to for next cycle if no match
+		clickedCard = [];
 	}
+}
+
+//function to listen for clicks and execute gameLogic
+function listenForClicks() {
+	var clicks = document.querySelectorAll('.deck li:not(.show):not(.open):not(.match)');
+	clicks.forEach(function(el) {
+		el.addEventListener('click', gameLogic);
+	});
 }
 
 //function to flip existing deck invisible
@@ -148,9 +213,9 @@ function updateMoves() {
 
 //gameWon logic
 function gameWon() {
-	alert(`Yay you win after ${moves} moves! Click OK to play again!`);
+	alert(`Yay you win after ${moves} moves!\nThe time you took is ${saveTime} in min:sec.\n\nClick OK to play again!`);
 
-	gameStart();
+	shuffleDeck();
 	setTimeout(showAllCards, 800);
 	setTimeout(resetCards, 7000);
 
@@ -162,8 +227,18 @@ function gameWon() {
 	listenForClicks();
 }
 
+//function for reset button
 function reset() {
-	gameStart();
+	//stop timer
+	clearInterval(interval);
+	//clear timer data
+	document.querySelector('.seconds').innerHTML = '00:00';
+	seconds = 0;
+	minutes = 0;
+	displaySeconds = 0;
+	displayMinutes = 0;
+
+	shuffleDeck();
 	setTimeout(showAllCards, 800);
 	setTimeout(resetCards, 7000);
 
@@ -172,19 +247,10 @@ function reset() {
 	cardsMatched = [];
 	listenForClicks();
 
-	//reset moves
+	//reset moves and stars
 	movesInnertext.textContent = 0;
 	moves = 0;
-
 	resetStars();
-}
-
-//function to listen for clicks and execute gameLogic
-function listenForClicks() {
-	var clicks = document.querySelectorAll('.deck li:not(.show):not(.open):not(.match)');
-	clicks.forEach(function(el) {
-		el.addEventListener('click', gameLogic);
-	});
 }
 
 // Shuffle function from http://stackoverflow.com/a/2450976
