@@ -2,17 +2,15 @@
 
 ## Table of Contents
 
-* [WoopWoop](#WoopWoop)
+* [What's this game?](#What's)
 * [Whatelse](#whatelse)
 
-## WoopWoop
+## What's this game?
 
-This is Project #2 -- Udacity Front End Nanodegree
+This is the Memory Game, project #2 of Udacity FEND programe.
 
-I'll be playinh wiyh `js/app.js` and start building out the game's functionality
+You are shown a grid of cards and you are asked to remember the locations of the matching pairs before they're all gadzooked and you're asked to rematch them.
 
-You can view my nonexistent portfolio [Here](https://uchamucha.com/me).
+## Dependencies
 
-## Whatelse?
-
-I dunno man I'm just playing around with _markdown italics_ lol.
+Not much dependencies here. Basic HTML CSS and JS is all.

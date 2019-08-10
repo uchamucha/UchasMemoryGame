@@ -1,6 +1,6 @@
 //begin
 
-//initalize timer values
+//initalize timer variables
 var interval = null;
 let seconds = 0;
 let minutes = 0;
@@ -34,6 +34,7 @@ listenForClicks();
 
 //timer function
 function gameTimer() {
+	//increment time
 	seconds++;
 
 	//Logic to determine when to increment next value
@@ -59,12 +60,13 @@ function gameTimer() {
 	document.querySelector('.seconds').innerHTML = displayMinutes + ':' + displaySeconds;
 }
 
-// createHTML to shuffle and reset cards
+//function to shuffle and reset cards
 function shuffleDeck() {
 	alert(
 		`Welcome to the Memory Mame.\n\n1. Once the cards are revealed, you'll have seven seconds to memorize them before they're yeeted out of your sight.\n\n2. Click on two cards to reveal them.\n\n3. If they don't match click elsewhere to reset them.\n\n4. Start clicking again and get the damn cards matched!`
 	);
 
+	//start timer
 	interval = setInterval(gameTimer, 1000);
 
 	// create card array using existing deck
@@ -123,7 +125,7 @@ function gameLogic(evt) {
 			clickedCard = []; //reset clickedCard array for next cycle
 			cardsMatched.push(1); //push 1 into cardsMatched to register matched count
 
-			//game win logic if all cards match
+			//game won logic if all cards match
 			if (cardsMatched.length === 8) {
 				//stop timer
 				clearInterval(interval);
