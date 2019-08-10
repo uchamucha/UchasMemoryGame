@@ -2,8 +2,8 @@
 
 ## Table of Contents
 
-* [What's this game?](#What's)
-* [Whatelse](#whatelse)
+* [What's this game?](#whatsThisGame)
+* [Dependencies](#dep)
 
 ## What's this game?
 
